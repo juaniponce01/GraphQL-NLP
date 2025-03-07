@@ -1,4 +1,4 @@
-#Python Code Challenge - GraphQL & NLP
+# Python Code Challenge - GraphQL & NLP
 
 ## Programming Challenge for Back End position
 
