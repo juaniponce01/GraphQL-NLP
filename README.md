@@ -1,40 +1,161 @@
-# Python Code Challenge - GraphQL & NLP
+# API GraphQL para Consultar Productos y Clientes
 
-## Programming Challenge for Back End position
+Esta es una API GraphQL que permite consultar información sobre productos y clientes, incluyendo compras, detalles del producto y estadísticas relacionadas.
 
-We require the development of an API with 2 services and 3 endpoints (optionally 4):
+## Instalación
 
-## Data Service
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/juaniponce01/GraphQL-NLP.git
+   ```
 
-The Data service shall connect to a CSV file that can be downloaded from the following link:
+2. Navega al directorio del proyecto:
+   ```bash
+   cd repo
+   ```
 
-[Data example - Python Coding Challenge - GraphQL.csv](https://prod-files-secure.s3.us-west-2.amazonaws.com/8bdb40ef-cc0d-4853-862c-95ff2b4790ca/b82763a3-3ac0-4c8a-99bb-d763c0b00b54/Data_example_-_Python_Coding_Challenge_-_GraphQL.csv)
+3. Instala las dependencias:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### GraphQL endpoint
+## Ejecución
 
-An endpoint shall offer access to the data in the CSV file using GraphQL. This endpoint shall have the proper schema.
+Para iniciar la API, ejecuta el siguiente comando:
 
-This endpoint shall be fully developed and properly documented.
+```bash
+uvicorn main:app --reload
+```
 
-### NLP endpoint
+La API estará disponible en `http://127.0.0.1:8000/docs`.
 
-An endpoint shall offer the option to query the data in the CSV file using natural language and respond in the same manner.
+## Consultas GraphQL
 
-## Docs Service
+Puedes acceder a la interfaz interactiva de GraphQL en `http://127.0.0.1:8000/graphql`.
 
-This endpoint shall offer a swagger service documenting these 3 endpoints in Swagger 2.0 or OpenAPI 3.0.
+A continuación, se describen las consultas disponibles:
 
-Swagger shall include examples.
+### Consultas
 
-## Optional Auth Service
+#### `get_products`
+Obtiene todos los productos registrados.
 
-An optional service shall implement the oAuth 2.0 client credentials flow and return a JWT.
+**Ejemplo de consulta:**
+```graphql
+query {
+  getProducts {
+    fecha
+    id_cliente
+    sku_producto
+    nombre_producto
+  }
+}
+```
 
-If the Auth service is implemented, the JWT shall be required as a bearer token in the an Authorization header for the Data Service endpoints
+#### `get_product(id: Int)`
+Obtiene un producto específico por su `id_producto`.
 
-## General guidelines
+**Ejemplo de consulta:**
+```graphql
+query {
+  getProduct(id: 1) {
+    fecha
+    id_cliente
+    sku_producto
+    nombre_producto
+  }
+}
+```
 
-- We require the code to be implemented in docker.
-- We require the code to be hosted in a public git repository at Github, Gitlab or other similar service, with real usage of the repo, with commits as the development process takes place, not just a final commit.
-- We require the repo to have a Readme file explaining how to compile and launch the service.
-- We accept the use of AI tools such as ChatGPT, Gemini or Perplexity as long as the chats are provided as shared links or printed PDFs.
+#### `get_product_by_name(name: String)`
+Obtiene un producto por su nombre.
+
+**Ejemplo de consulta:**
+```graphql
+query {
+  getProductByName(name: "Producto 1") {
+    fecha
+    id_cliente
+    sku_producto
+    nombre_producto
+  }
+}
+```
+
+#### `get_product_by_sku(sku: String)`
+Obtiene un producto por su SKU.
+
+**Ejemplo de consulta:**
+```graphql
+query {
+  getProductBySku(sku: "SKU123") {
+    fecha
+    id_cliente
+    sku_producto
+    nombre_producto
+  }
+}
+```
+
+#### `get_products_by_client(id: Int)`
+Obtiene todos los productos comprados por un cliente, basado en su `id_cliente`.
+
+**Ejemplo de consulta:**
+```graphql
+query {
+  getProductsByClient(id: 1) {
+    fecha
+    id_cliente
+    sku_producto
+    nombre_producto
+  }
+}
+```
+
+#### `get_products_by_date(date: Date)`
+Obtiene todos los productos comprados en una fecha específica.
+
+**Ejemplo de consulta:**
+```graphql
+query {
+  getProductsByDate(date: "2024-02-01") {
+    fecha
+    id_cliente
+    sku_producto
+    nombre_producto
+  }
+}
+```
+
+#### `get_products_from_date(start_date: Date)`
+Obtiene todos los productos comprados a partir de una fecha específica.
+
+**Ejemplo de consulta:**
+```graphql
+query {
+  getProductsFromDate(startDate: "2024-01-01") {
+    fecha
+    id_cliente
+    sku_producto
+    nombre_producto
+  }
+}
+```
+
+## Estructura de Datos
+
+### `ProductData`
+
+Los productos se representan en el siguiente formato:
+
+- `fecha`: La fecha de la compra (formato `YYYY-MM-DD`).
+- `id_cliente`: ID único del cliente.
+- `sku_producto`: SKU del producto.
+- `nombre_producto`: Nombre del producto.
+- Otros atributos opcionales como la marca, código, categoría, etc.
+
+## Licencia
+
+Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+
+
